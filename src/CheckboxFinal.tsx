@@ -68,7 +68,7 @@ export const CheckboxFinal: FC<CheckboxProps> = ({ register, label, name }) => {
 
     return (
         <Style>
-            <input type="checkbox" name={name} onChange={checkboxChange} {...register} />
+            <input type="checkbox" name={name} id={name} checked={checked} onChange={checkboxChange} {...register} />
             <label htmlFor={name} onClick={onClickLabel}>
                 {label}
             </label>

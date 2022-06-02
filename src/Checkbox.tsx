@@ -4,9 +4,9 @@ import styled from "styled-components";
 
 const Style = styled.div`
     --checkbox-size: 1.5rem;
-    /* overflow: hidden; */
-    /* position: relative; */
-    /* display: inline-block; */
+    overflow: hidden;
+    position: relative;
+    display: inline-block;
 
     > input {
         position: absolute;
@@ -53,9 +53,10 @@ interface CheckboxProps {
     register: any;
     label: string;
     name: string;
+    id: string;
 }
 
-export const Checkbox: FC<CheckboxProps> = ({ register, label, name }) => {
+export const Checkbox: FC<CheckboxProps> = ({ register, label, name, id }) => {
     const [checked, setChecked] = useState(false);
 
     const checkboxChange = useCallback(() => {
@@ -65,14 +66,14 @@ export const Checkbox: FC<CheckboxProps> = ({ register, label, name }) => {
     const onClickLabel = useCallback(() => {
         setChecked(!checked);
         console.log("clicando en el label y checkeando valor checked 1:", checked);
-        const x: any = document.getElementById("custom1");
+        const x: any = document.getElementById(id);
         x.checked = !checked;
         console.log("constante x:", x.checked);
     }, [checked]);
 
     return (
         <Style>
-            <input type="checkbox" id="custom1" name={name} onChange={checkboxChange} {...register} />
+            <input type="checkbox" name={name} id={id} checked={checked} onChange={checkboxChange} {...register} />
             <label htmlFor={name} onClick={onClickLabel}>
                 {label}
             </label>
