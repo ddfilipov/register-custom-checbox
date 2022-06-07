@@ -1,12 +1,11 @@
-import { FC, useCallback, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { FormProvider, useForm, UseFormRegister, FieldValues } from "react-hook-form";
 import styled from "styled-components";
 import { Checkbox } from "../Checkbox";
 import { Checkbox2 } from "../Checkbox2";
 import { CheckboxFinal } from "../CheckboxFinal";
-import * as Mat from "@material-ui/core";
 
-interface FormProps {
+export interface FormProps {
     check1: boolean;
     check2: boolean;
     check3: boolean;

@@ -1,6 +1,7 @@
 import { FC, useCallback, useRef, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FieldValues, FormProvider, useForm, UseFormRegister, UseFormReturn } from "react-hook-form";
 import styled from "styled-components";
+import { FormProps } from "./forms/Formulario1";
 
 const Style = styled.div`
     --checkbox-size: 1.5rem;
@@ -68,7 +69,7 @@ export const CheckboxFinal: FC<CheckboxProps> = ({ register, label, name }) => {
 
     return (
         <Style>
-            <input type="checkbox" name={name} id={name} checked={checked} onChange={checkboxChange} {...register} />
+            <input type="checkbox" name={name} id={name} onChange={checkboxChange} {...register} />
             <label htmlFor={name} onClick={onClickLabel}>
                 {label}
             </label>
