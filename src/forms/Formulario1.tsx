@@ -12,7 +12,7 @@ export interface FormProps {
     check3: boolean;
 }
 
-interface InputX {
+interface TextInputs {
     texto: string;
     desde: string;
     hasta: string;
@@ -26,8 +26,7 @@ export const Formulario1: FC = ({}) => {
         alert(JSON.stringify(data, null, " "));
     }, []);
 
-    const [inputX, setInputX] = useState<InputX[]>([{ texto: "texto", desde: "desde", hasta: "hasta" }]);
-    const [inputX2, setInputX2] = useState();
+    const [inputX, setInputX] = useState<TextInputs[]>([{ texto: "texto", desde: "desde", hasta: "hasta" }]);
 
     const clickMas = useCallback(() => {
         setInputX([...inputX, { texto: "texto", desde: "desde", hasta: "hasta" }]);
