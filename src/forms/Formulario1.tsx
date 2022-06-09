@@ -1,42 +1,41 @@
 import { FC, useCallback, useEffect, useRef, useState } from "react";
-import { FormProvider, useForm, UseFormRegister, FieldValues } from "react-hook-form";
+import { FormProvider, useForm, UseFormRegister, FieldValues, useFieldArray } from "react-hook-form";
 import styled from "styled-components";
 import { Checkbox } from "../Checkbox";
 import { Checkbox2 } from "../Checkbox2";
 import { CheckboxFinal } from "../CheckboxFinal";
-import { GrupoInputs } from "../GrupoInputs";
+import { GrupoInputs, TextInputs } from "../GrupoInputs";
 
 export interface FormProps {
     check1: boolean;
     check2: boolean;
     check3: boolean;
-}
-
-interface TextInputs {
-    texto: string;
-    desde: string;
-    hasta: string;
+    inputs: TextInputs[];
 }
 
 export const Formulario1: FC = ({}) => {
-    const methods = useForm<FormProps>();
-    const { register, handleSubmit, watch } = methods;
+    const methods = useForm<FormProps>({
+        defaultValues: {
+            check1: false,
+            check2: false,
+            check3: false,
+            inputs: [{ texto: "", desde: "", hasta: "" }],
+        },
+    });
+    const { register, handleSubmit, watch, control } = methods;
 
+    const { fields, append, remove } = useFieldArray({ name: "inputs", control });
     const onSubmit = useCallback((data: FormProps) => {
-        alert(JSON.stringify(data, null, " "));
+        console.log(JSON.stringify(data, null, " "));
     }, []);
 
-    const [inputX, setInputX] = useState<TextInputs[]>([{ texto: "texto", desde: "desde", hasta: "hasta" }]);
-
     const clickMas = useCallback(() => {
-        setInputX([...inputX, { texto: "texto", desde: "desde", hasta: "hasta" }]);
-    }, [inputX]);
+        append({texto: "", desde: "", hasta: "" });
+    }, []);
 
     const clickMenos = useCallback(() => {
-        if (inputX.length > 0 || inputX !== undefined) {
-            setInputX(inputX.slice(0, -1));
-        }
-    }, [inputX]);
+        remove(fields.length - 1);
+    }, []);
 
     return (
         <FormProvider {...methods}>
@@ -46,11 +45,15 @@ export const Formulario1: FC = ({}) => {
                 <CheckboxFinal label="Checkbox Custom 3" register={{ ...register("check3") }} name={"check3"} />
                 <input type="submit" style={{ display: "block" }} />
                 <hr />
-                {inputX.map((input, index) => (
+                {fields.map((input, index) => (
                     <GrupoInputs
-                        texto={input.texto + " " + index}
-                        desde={input.desde + " " + index}
-                        hasta={input.hasta + " " + index}
+                        texto={input.texto}
+                        desde={input.desde}
+                        hasta={input.hasta}
+                        registerTexto={{ ...register(`inputs.${index}.texto` as const) }}
+                        registerDesde={{ ...register(`inputs.${index}.desde` as const) }}
+                        registerHasta={{ ...register(`inputs.${index}.hasta` as const) }}
+                        key={index}
                     ></GrupoInputs>
                 ))}
                 <input type="button" value="          +          " onClick={clickMas} />

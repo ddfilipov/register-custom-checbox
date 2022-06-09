@@ -11,26 +11,29 @@ export const Container = styled.div`
     width: 200px;
 `;
 
-export interface InputX {
+export interface TextInputs {
     texto: string;
     desde: string;
     hasta: string;
+    registerTexto?: any;
+    registerDesde?: any;
+    registerHasta?: any;
 }
 
-export const GrupoInputs: FC<InputX> = ({ texto, desde, hasta }) => {
+export const GrupoInputs: FC<TextInputs> = ({ texto, desde, hasta, registerTexto, registerDesde, registerHasta }) => {
     return (
         <Container>
             <div>
                 <label htmlFor="texto1">Texto: </label>
-                <input type="text" value={texto} />
+                <input type="text" {...registerTexto} />
             </div>
             <div>
-                <label htmlFor="texto1">Desde: </label>
-                <input type="text" value={desde} />
+                <label htmlFor="desde">Desde: </label>
+                <input type="text" {...registerDesde} />
             </div>
             <div>
-                <label htmlFor="texto1">Hasta: </label>
-                <input type="text" value={hasta} />
+                <label htmlFor="hasta">Hasta: </label>
+                <input type="text" {...registerHasta} />
             </div>
         </Container>
     );
