@@ -30,7 +30,7 @@ export const Formulario1: FC = ({}) => {
     }, []);
 
     const clickMas = useCallback(() => {
-        append({texto: "", desde: "", hasta: "" });
+        append({ texto: "", desde: "", hasta: "" });
     }, []);
 
     const clickMenos = useCallback(() => {
@@ -45,19 +45,23 @@ export const Formulario1: FC = ({}) => {
                 <CheckboxFinal label="Checkbox Custom 3" register={{ ...register("check3") }} name={"check3"} />
                 <input type="submit" style={{ display: "block" }} />
                 <hr />
-                {fields.map((input, index) => (
-                    <GrupoInputs
-                        texto={input.texto}
-                        desde={input.desde}
-                        hasta={input.hasta}
-                        registerTexto={{ ...register(`inputs.${index}.texto` as const) }}
-                        registerDesde={{ ...register(`inputs.${index}.desde` as const) }}
-                        registerHasta={{ ...register(`inputs.${index}.hasta` as const) }}
-                        key={index}
-                    ></GrupoInputs>
-                ))}
-                <input type="button" value="          +          " onClick={clickMas} />
-                <input type="button" value="          -          " onClick={clickMenos} />
+                <div>
+                    {fields.map((input, index) => (
+                        <GrupoInputs
+                            texto={input.texto}
+                            desde={input.desde}
+                            hasta={input.hasta}
+                            registerTexto={{ ...register(`inputs.${index}.texto` as const) }}
+                            registerDesde={{ ...register(`inputs.${index}.desde` as const) }}
+                            registerHasta={{ ...register(`inputs.${index}.hasta` as const) }}
+                            key={index}
+                        ></GrupoInputs>
+                    ))}
+                    <input type="button" value="          +          " onClick={clickMas} />
+                    <input type="button" value="          -          " onClick={clickMenos} />
+                </div>
+                <hr />
+                <div></div>
             </form>
         </FormProvider>
     );
