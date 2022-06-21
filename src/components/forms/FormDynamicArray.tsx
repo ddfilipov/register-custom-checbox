@@ -30,8 +30,10 @@ export const FormDynamicArray: FC = ({}) => {
     }, []);
 
     const clickMas = useCallback(() => {
-        appendSolicitantes({ datosMinimos: { dni: "", nombre: "" } });
-    }, []);
+        if (fieldsSolicitantes.length < 2) {
+            appendSolicitantes({ datosMinimos: { dni: "", nombre: "" } });
+        }
+    }, [fieldsSolicitantes]);
 
     const clickMenos = useCallback(() => {
         removeSolicitantes(fieldsSolicitantes.length - 1);
@@ -42,7 +44,7 @@ export const FormDynamicArray: FC = ({}) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
                     {fieldsSolicitantes.map((solicitante, index) => (
-                        <Test soli={solicitante} registrar={register} id={index} />
+                        <Test soli={solicitante} registrar={register} id={index} key={index} />
                     ))}
                 </div>
                 <input type="button" value="          +          " onClick={clickMas} />
