@@ -1,5 +1,5 @@
 import { FC, useCallback, useRef, useState } from "react";
-import { FieldValues, FormProvider, useForm, UseFormRegister, UseFormReturn } from "react-hook-form";
+import { FieldValues, FormProvider, useFieldArray, useForm, UseFormRegister, UseFormReturn } from "react-hook-form";
 import styled from "styled-components";
 import { FormProps } from "./forms/Formulario1";
 
@@ -16,17 +16,37 @@ interface IDatosMinimosPersona {
     nombre: string;
 }
 
+interface IEmpadronamiento {
+    nombre: string;
+}
+
 export interface Solicitante {
     datosMinimos: IDatosMinimosPersona;
+    municipios: IEmpadronamiento[];
 }
 
 export interface SolicitanteDenis {
     soli: Solicitante;
     registrar: any;
     id: number;
+    control: any;
 }
 
-export const Test: FC<SolicitanteDenis> = ({ soli, registrar, id }) => {
+export const Test: FC<SolicitanteDenis> = ({ soli, registrar, id, control }) => {
+    const {
+        fields: fieldsEmpadronamiento,
+        append: appendEmpadronamiento,
+        remove: removeEmpadronamiento,
+    } = useFieldArray({ name: `solicitantes.${id}.municipios`, control });
+
+    const clickMas = useCallback(() => {
+        appendEmpadronamiento({ nombre: "" });
+    }, [fieldsEmpadronamiento]);
+
+    const clickMenos = useCallback(() => {
+        removeEmpadronamiento(fieldsEmpadronamiento.length - 1);
+    }, [fieldsEmpadronamiento]);
+
     return (
         <div>
             <div>
@@ -36,6 +56,21 @@ export const Test: FC<SolicitanteDenis> = ({ soli, registrar, id }) => {
             <div>
                 <label htmlFor="nombre">Valor del NOMBRE default: {soli.datosMinimos.nombre}</label>
                 <input type="text" maxLength={50} {...registrar(`solicitantes.${id}.datosMinimos.nombre` as const)} />
+            </div>
+            <div>
+                {fieldsEmpadronamiento.map((municipio, index) => (
+                    <div key={index}>
+                        <label htmlFor="nombre">Empadronamiento {index + 1}</label>
+                        <input
+                            type="text"
+                            maxLength={50}
+                            {...registrar(`solicitantes.${id}.municipios.${index}.nombre` as const)}
+                        />
+                    </div>
+                ))}
+                <p>Añadir municipio</p>
+                <input type="button" value="          +          " onClick={clickMas} />
+                <input type="button" value="          -          " onClick={clickMenos} />
             </div>
         </div>
     );

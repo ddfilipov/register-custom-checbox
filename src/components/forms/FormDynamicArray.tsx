@@ -14,7 +14,7 @@ interface FormFinal {
 export const FormDynamicArray: FC = ({}) => {
     const methods = useForm<FormFinal>({
         defaultValues: {
-            solicitantes: [{ datosMinimos: { dni: "" } }],
+            solicitantes: [{ datosMinimos: { dni: "" }, municipios: [{ nombre: "municipio default1" }] }],
         },
     });
     const { register, handleSubmit, watch, control } = methods;
@@ -44,9 +44,10 @@ export const FormDynamicArray: FC = ({}) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
                     {fieldsSolicitantes.map((solicitante, index) => (
-                        <Test soli={solicitante} registrar={register} id={index} key={index} />
+                        <Test soli={solicitante} registrar={register} id={index} key={index} control={control} />
                     ))}
                 </div>
+                <p>Añadir solicitante</p>
                 <input type="button" value="          +          " onClick={clickMas} />
                 <input type="button" value="          -          " onClick={clickMenos} />
                 <input type={"submit"} />
