@@ -8,6 +8,7 @@ interface FormFinal {
     firma: string; //TODO: max length = 2
     nombre: string;
 }
+const SignatureWrapper = styled.div``;
 
 export const SignatureCanvasTest: FC = ({}) => {
     const methods = useForm<FormFinal>({});
@@ -22,19 +23,10 @@ export const SignatureCanvasTest: FC = ({}) => {
         (data: FormFinal) => {
             console.log("entrando en onSubmit");
             // const signaturePad = sigCanvas.current;
-            if (sigCanvas.current || sigCanvas.current != null) {
-                console.log("HOLA???", sigCanvas.current.toDataURL());
-                // register("firma", { value: sigCanvas.current.toDataURL() });
-                // register("firma", {
-                //     setValueAs: () => {
-                //         if (sigCanvas.current || sigCanvas.current != null) {
-                //             return sigCanvas.current.toDataURL();
-                //         } else return "pepe";
-                // },
-                // });
-                // setValueAs: (value: any) => any;
-                setValue("firma", sigCanvas.current.toDataURL());
-            }
+            // if (sigCanvas.current || sigCanvas.current != null) {
+            //     console.log("HOLA???", sigCanvas.current.toDataURL());
+            //     setValue("firma", sigCanvas.current.toDataURL());
+            // }
             // register("firma", { value: prueba });
             console.log("DATAA", data);
             console.log(JSON.stringify(data, null, " "));
@@ -46,49 +38,48 @@ export const SignatureCanvasTest: FC = ({}) => {
     //     console.log({ ...data });
     // };
 
-    const SignatureWrapper = styled.div`
-        border: 1px solid #999999;
-        width: 25%;
-        height: 25%;
-    `;
+    const saveFirma = () => {
+        if (sigCanvas.current) {
+            const dataURL = sigCanvas.current.toDataURL();
+            return dataURL;
+        }
+    };
 
-    // const saveFirma = useCallback(() => {
-    //     console.log("entro en formatIntoPng");
-    //     if (sigCanvas.current) {
-    //         console.log("entro IFFFFFFFFFFFFFFF");
-    //         const dataURL = sigCanvas.current.toDataURL();
-    //         // setPrueba(dataURL);
-    //         console.log("dataURL:", dataURL);
-    //         // register("firma", { value: dataURL });
-    //         // setValue("firma", dataURL);
-    //         return dataURL;
-    //     }
-    // }, [firmaWatch]);
+    const clearSignature = () => {
+        if (sigCanvas.current) {
+            const dataURL = sigCanvas.current.clear();
+            register("firma", {setValueAs: ()=>{}})
+            return dataURL;
+        }
+    };
 
     return (
         <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <SignatureWrapper>
-                    <SignaturePad ref={sigCanvas} />
-                    {/* <Controller
+                    <Controller
                         name="firma"
                         control={control}
                         render={({ field }) => (
                             <SignaturePad
                                 ref={sigCanvas}
-                                // onEnd={() => field.onChange(saveFirma())}
-                                // onEnd={() => (field.value = "asd")}
-                                // onEnd={() => {register("firma")}}
-                                onEnd={() => saveFirma()}
-                                // onEnd={() => console.log("field:::::::::", field)}
+                                onEnd={() => field.onChange(saveFirma())}
                                 penColor="green"
                                 canvasProps={{
+                                    width: 315,
+                                    height: 200,
                                     style: { border: "1px solid green" },
                                 }}
                             />
                         )}
-                    /> */}
+                    />
                 </SignatureWrapper>
+                <input
+                    onClick={() => {
+                        clearSignature();
+                    }}
+                    type="button"
+                ></input>
                 <input type="text" {...register("nombre")}></input>
                 <input type={"submit"} />
             </form>
