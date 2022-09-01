@@ -12,8 +12,16 @@ const SignatureWrapper = styled.div``;
 
 export const SignatureCanvasTest: FC = ({}) => {
     const methods = useForm<FormFinal>({});
-    const { register, handleSubmit, control, watch, setValue } = methods;
-    // let sigCanvas = createRef<SignaturePad>();
+    const {
+        register,
+        handleSubmit,
+        control,
+        watch,
+        setValue,
+        resetField,
+        formState: { errors },
+    } = methods;
+
     let sigCanvas = useRef<ReactSignatureCanvas>(null);
     const [prueba, setPrueba] = useState<string>();
 
@@ -48,7 +56,8 @@ export const SignatureCanvasTest: FC = ({}) => {
     const clearSignature = () => {
         if (sigCanvas.current) {
             const dataURL = sigCanvas.current.clear();
-            register("firma", {setValueAs: ()=>{}})
+            // register("firma", {setValueAs: ()=>{}})
+            resetField("firma");
             return dataURL;
         }
     };
@@ -74,12 +83,14 @@ export const SignatureCanvasTest: FC = ({}) => {
                         )}
                     />
                 </SignatureWrapper>
-                <input
+                <button
                     onClick={() => {
                         clearSignature();
                     }}
                     type="button"
-                ></input>
+                >
+                    CLEAR
+                </button>
                 <input type="text" {...register("nombre")}></input>
                 <input type={"submit"} />
             </form>
